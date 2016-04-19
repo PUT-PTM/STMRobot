@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -g -nostartfiles -Map=PTM-robot.map -O0 --gc-sections -LD:\CooCox\CoIDE\configuration\ProgramData\PTM-robot -TD:\CooCox\CoIDE\configuration\ProgramData\PTM-robot/arm-gcc-link.ld -g">
+      <target file="PTM-robot.elf" lastModified="1542e6b80d5">
+         <source file="..\obj\stm32f4xx_syscfg.o" lastModified="1542e6b7702"/>
+         <source file="..\obj\stm32f4xx_usart.o" lastModified="1542e6b7753"/>
+         <source file="..\obj\stm32f4xx_pwr.o" lastModified="1542e6b7799"/>
+         <source file="..\obj\stm32_ub_hcsr04.o" lastModified="1542e6b77ef"/>
+         <source file="..\obj\tm_stm32f4_disco.o" lastModified="1542e6b782a"/>
+         <source file="..\obj\startup_stm32f4xx.o" lastModified="1542e6b785d"/>
+         <source file="..\obj\stm32_ub_led.o" lastModified="1542e6b789b"/>
+         <source file="..\obj\main.o" lastModified="1542e6b794a"/>
+         <source file="..\obj\stm32f4xx_rcc.o" lastModified="1542e6b79ab"/>
+         <source file="..\obj\tm_stm32f4_hcsr04.o" lastModified="1542e6b79f3"/>
+         <source file="..\obj\tm_stm32f4_delay.o" lastModified="1542e6b7a48"/>
+         <source file="..\obj\tm_stm32f4_spi.o" lastModified="1542e6b7aed"/>
+         <source file="..\obj\stm32f4xx_gpio.o" lastModified="1542e6b7b3c"/>
+         <source file="..\obj\system_stm32f4xx.o" lastModified="1542e6b7b6d"/>
+         <source file="..\obj\syscalls.o" lastModified="1542e6b7c29"/>
+         <source file="..\obj\stm32f4xx_spi.o" lastModified="1542e6b7c81"/>
+         <source file="..\obj\stm32f4xx_exti.o" lastModified="1542e6b7cc1"/>
+         <source file="..\obj\misc.o" lastModified="1542e6b7cf3"/>
+         <source file="..\obj\tm_stm32f4_gpio.o" lastModified="1542e6b7d4f"/>
+         <source file="..\obj\tm_stm32f4_timer_properties.o" lastModified="1542e6b7d89"/>
+         <source file="..\obj\stm32f4xx_tim.o" lastModified="1542e6b7e3d"/>
+         <source file="..\obj\tm_stm32f4_pcd8544.o" lastModified="1542e6b7ef8"/>
+      </target>
+   </processor>
+</history>
