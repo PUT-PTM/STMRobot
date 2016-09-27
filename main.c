@@ -327,7 +327,7 @@ int median()
 		tempArray[min] = tmp;
 		j++;
 	}
-	return tempArray[9];			//Domyslam sie, ze sciana nie jest 21 kilometrow stad
+	return tempArray[9];
 }
 
 void toggle(int diode)
