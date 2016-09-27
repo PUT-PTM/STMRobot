@@ -5,43 +5,41 @@
 #include "stm32f4xx_tim.h"
 #include <stm32f4xx_usart.h>
 #include "misc.h"
-#include "tm/tm_stm32f4_pcd8544.h"
 
 long counter = 0;
 long counter2 = 0;
 int distArray[19] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 float odl;
-int obstacle = 100;
+int obstacle = 45;
 int action = 80;
-int stopped = 1;
 
-        void SetMotorBits(int m1a, int m1b, int m2a, int m2b){
-                GPIO_ResetBits(GPIOA, GPIO_Pin_6);
-                GPIO_ResetBits(GPIOB, GPIO_Pin_0 | GPIO_Pin_8);
-                GPIO_ResetBits(GPIOE, GPIO_Pin_2);
-                if(m1a == 1 ) GPIO_SetBits(GPIOA, GPIO_Pin_6);
-                if(m1b == 1 ) GPIO_SetBits(GPIOB, GPIO_Pin_0);
-                if(m2a == 1 ) GPIO_SetBits(GPIOE, GPIO_Pin_2);
-                if(m2b == 1 ) GPIO_SetBits(GPIOB, GPIO_Pin_8);
-        }
-        void driveBackward(void){
-                SetMotorBits(0,1,0,1);
-        }
-        void driveForward(void){
-                SetMotorBits(1,0,1,0);
-        }
-        void spinLeft(void){
-                SetMotorBits(1,0,0,1);
-        }
-        void spinRight(void){
-
-                SetMotorBits(0,1,1,0);
-        }
-        void stopMotor(void){
-                SetMotorBits(0,0,0,0);
-        }
+void SetMotorBits(int m1a, int m1b, int m2a, int m2b){
+	GPIO_ResetBits(GPIOA, GPIO_Pin_6);
+	GPIO_ResetBits(GPIOB, GPIO_Pin_0 | GPIO_Pin_8);
+	GPIO_ResetBits(GPIOE, GPIO_Pin_2);
+	if(m1a == 1 ) GPIO_SetBits(GPIOA, GPIO_Pin_6);
+	if(m1b == 1 ) GPIO_SetBits(GPIOB, GPIO_Pin_0);
+	if(m2a == 1 ) GPIO_SetBits(GPIOE, GPIO_Pin_2);
+	if(m2b == 1 ) GPIO_SetBits(GPIOB, GPIO_Pin_8);
+}
+void driveBackward(void){
+	SetMotorBits(0,1,0,1);
+}
+void driveForward(void){
+	SetMotorBits(1,0,1,0);
+}
+void spinLeft(void){
+	SetMotorBits(1,0,0,1);
+}
+void spinRight(void){
+	SetMotorBits(0,1,1,0);
+}
+void stopMotor(void){
+	SetMotorBits(0,0,0,0);
+}
 
 void MotorGPIOinit(void){
+/* GPIO A */
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 	GPIO_InitTypeDef GPIOA_InitDef;
 	GPIOA_InitDef.GPIO_Pin = GPIO_Pin_6;
@@ -50,7 +48,7 @@ void MotorGPIOinit(void){
 	GPIOA_InitDef.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIOA_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_Init(GPIOA, &GPIOA_InitDef);
-
+/* GPIO B */
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 	GPIO_InitTypeDef GPIOB_InitDef;
 	GPIOB_InitDef.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_8;
@@ -59,7 +57,7 @@ void MotorGPIOinit(void){
 	GPIOB_InitDef.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIOB_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_Init(GPIOB, &GPIOB_InitDef);
-
+ /* GPIO E */
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
 	GPIO_InitTypeDef GPIOE_InitDef;
 	GPIOE_InitDef.GPIO_Pin = GPIO_Pin_2;
@@ -94,21 +92,21 @@ void setupLedAndButton()
 
 	SystemInit();
 	SystemCoreClockUpdate();
+
 	TIM_TimeBaseInitTypeDef	TIM_TimeBaseStructure;
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);
-
-	TIM_TimeBaseStructure.TIM_Period= 11;
-	TIM_TimeBaseStructure.TIM_Prescaler= 6;
-	TIM_TimeBaseStructure.TIM_ClockDivision= TIM_CKD_DIV1;
-	TIM_TimeBaseStructure.TIM_CounterMode= TIM_CounterMode_Up;
+	TIM_TimeBaseStructure.TIM_Period = 11;
+	TIM_TimeBaseStructure.TIM_Prescaler = 6;
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
 	TIM_Cmd(TIM4,ENABLE);
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE);
-	TIM_TimeBaseStructure.TIM_Period= 3000;
-	TIM_TimeBaseStructure.TIM_Prescaler= 10500;
-	TIM_TimeBaseStructure.TIM_ClockDivision= TIM_CKD_DIV1;
-	TIM_TimeBaseStructure.TIM_CounterMode= TIM_CounterMode_Up;
+	TIM_TimeBaseStructure.TIM_Period = 3000;
+	TIM_TimeBaseStructure.TIM_Prescaler = 10500;
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 	TIM_Cmd(TIM3,ENABLE);
 
@@ -133,8 +131,6 @@ void setupLedAndButton()
 
 	TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 	TIM_ITConfig(TIM3, TIM_IT_Update,ENABLE);
-
-
 }
 
 void TIM3_IRQHandler(void)
@@ -142,55 +138,41 @@ void TIM3_IRQHandler(void)
 	if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+
 		if(action > 20)
 		{
-			PCD8544_Clear();
-			PCD8544_Puts("MOTORS TESTING", PCD8544_Pixel_Set, PCD8544_FontSize_5x7);
-			PCD8544_Refresh();
-
 			if(action < 101)
 			{
-				PCD8544_Puts("WAITING", PCD8544_Pixel_Set, PCD8544_FontSize_5x7);
-				PCD8544_Refresh();
 				SetMotorBits(0,0,0,0);
 				action++;
 			}
 
 			if(action <= 104 && action > 100)
 			{
-				PCD8544_Puts("SPIN RIGHT", PCD8544_Pixel_Set, PCD8544_FontSize_5x7);
-				PCD8544_Refresh();
 				spinRight();
 				action++;
 			}
 
 			if(action > 104 && action <= 108)
 			{
-				PCD8544_Puts("SPIN LEFT", PCD8544_Pixel_Set, PCD8544_FontSize_5x7);
-				PCD8544_Refresh();
 				spinLeft();
 				action++;
 			}
 
 			if(action > 108 && action <= 112)
 			{
-				PCD8544_Puts("FORWARD", PCD8544_Pixel_Set, PCD8544_FontSize_5x7);
-				PCD8544_Refresh();
 				driveForward();
 				action++;
 			}
 
 			if(action > 112 && action <= 116)
 			{
-				PCD8544_Puts("BACKWARD", PCD8544_Pixel_Set, PCD8544_FontSize_5x7);
-				PCD8544_Refresh();
 				driveBackward();
 				action++;
 			}
 
 			if(action > 116 && action <= 120)
 			{
-
 				driveForward();
 				action++;
 			}
@@ -204,13 +186,11 @@ void TIM3_IRQHandler(void)
 		{
 			if(action < 3)
 			{
-				if(odl <= 0){
-					driveBackward();
-				}
-				else if(odl < obstacle)
+				if(odl < obstacle)// && !(odl == 0))
 				{
 					spinLeft();
 				}
+
 				else
 				{
 					driveForward();
@@ -222,7 +202,7 @@ void TIM3_IRQHandler(void)
 				action++;
 			}
 		}
-		}
+	}
 }
 
 void TIM4_IRQHandler(void)
@@ -276,6 +256,7 @@ float CheckDistance(){
 				return -1;
 			}
 	}
+
 	int licznik = 0;
 	int pomiarTrwa = 1;
 	int przerwaniePomiaru = 0;
@@ -346,7 +327,7 @@ int median()
 		tempArray[min] = tmp;
 		j++;
 	}
-	return tempArray[9];
+	return tempArray[9];			//Domyslam sie, ze sciana nie jest 21 kilometrow stad
 }
 
 void toggle(int diode)
@@ -384,36 +365,9 @@ int main(void)
 	HCSRinit();
     MotorGPIOinit();
 
-    PCD8544_Init(0x40);
-    PCD8544_SetContrast(50);
-	PCD8544_Clear();
-	PCD8544_Puts("BTN TO START", PCD8544_Pixel_Set, PCD8544_FontSize_5x7);
-	PCD8544_Refresh();
-
-
     while(1)
     {
-
-    	if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
-    				turnAllOn();
-    	        }
      	diod(odl);
-
-    	PCD8544_Clear();
-     	if(odl <= 0){
-     						PCD8544_Puts("BACKWARD", PCD8544_Pixel_Set, PCD8544_FontSize_5x7);
-     						PCD8544_Refresh();
-     					}
-     					else if(odl < obstacle)
-     					{
-     						PCD8544_Puts("SPIN", PCD8544_Pixel_Set, PCD8544_FontSize_5x7);
-     						PCD8544_Refresh();
-     					}
-     					else
-     					{
-     						PCD8544_Puts("FORWARD", PCD8544_Pixel_Set, PCD8544_FontSize_5x7);
-     						PCD8544_Refresh();
-     					}
     	odl = CheckDistance();
     }
 }
