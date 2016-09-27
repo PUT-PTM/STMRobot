@@ -15,11 +15,7 @@ int obstacle = 100;
 int action = 80;
 int stopped = 1;
 
-
-/* Motor Library */
         void SetMotorBits(int m1a, int m1b, int m2a, int m2b){
-                //Motor1 - PA6, PB0
-                //Motor2 - PE2, PB8
                 GPIO_ResetBits(GPIOA, GPIO_Pin_6);
                 GPIO_ResetBits(GPIOB, GPIO_Pin_0 | GPIO_Pin_8);
                 GPIO_ResetBits(GPIOE, GPIO_Pin_2);
@@ -358,7 +354,7 @@ int median()
 		tempArray[min] = tmp;
 		j++;
 	}
-	return tempArray[9];			//Domyslam sie, ze sciana nie jest 21 kilometrow stad
+	return tempArray[9];
 }
 
 void toggle(int diode)
