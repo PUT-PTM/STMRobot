@@ -42,33 +42,32 @@ int stopped = 1;
         }
 
 void MotorGPIOinit(void){
-        /* GPIO A */
-                RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
-                GPIO_InitTypeDef GPIOA_InitDef;
-                GPIOA_InitDef.GPIO_Pin = GPIO_Pin_6;
-                GPIOA_InitDef.GPIO_OType = GPIO_OType_PP;
-                GPIOA_InitDef.GPIO_Mode = GPIO_Mode_OUT;
-                GPIOA_InitDef.GPIO_PuPd = GPIO_PuPd_NOPULL;
-                GPIOA_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
-                GPIO_Init(GPIOA, &GPIOA_InitDef);
-        /* GPIO B */
-            RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
-            GPIO_InitTypeDef GPIOB_InitDef;
-            GPIOB_InitDef.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_8;
-                GPIOB_InitDef.GPIO_OType = GPIO_OType_PP;
-                GPIOB_InitDef.GPIO_Mode = GPIO_Mode_OUT;
-                GPIOB_InitDef.GPIO_PuPd = GPIO_PuPd_NOPULL;
-                GPIOB_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
-                GPIO_Init(GPIOB, &GPIOB_InitDef);
-         /* GPIO E */
-            RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
-            GPIO_InitTypeDef GPIOE_InitDef;
-            GPIOE_InitDef.GPIO_Pin = GPIO_Pin_2;
-            GPIOE_InitDef.GPIO_OType = GPIO_OType_PP;
-            GPIOE_InitDef.GPIO_Mode = GPIO_Mode_OUT;
-            GPIOE_InitDef.GPIO_PuPd = GPIO_PuPd_NOPULL;
-            GPIOE_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
-            GPIO_Init(GPIOE, &GPIOE_InitDef);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+	GPIO_InitTypeDef GPIOA_InitDef;
+	GPIOA_InitDef.GPIO_Pin = GPIO_Pin_6;
+	GPIOA_InitDef.GPIO_OType = GPIO_OType_PP;
+	GPIOA_InitDef.GPIO_Mode = GPIO_Mode_OUT;
+	GPIOA_InitDef.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIOA_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_Init(GPIOA, &GPIOA_InitDef);
+
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+	GPIO_InitTypeDef GPIOB_InitDef;
+	GPIOB_InitDef.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_8;
+	GPIOB_InitDef.GPIO_OType = GPIO_OType_PP;
+	GPIOB_InitDef.GPIO_Mode = GPIO_Mode_OUT;
+	GPIOB_InitDef.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIOB_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_Init(GPIOB, &GPIOB_InitDef);
+
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+	GPIO_InitTypeDef GPIOE_InitDef;
+	GPIOE_InitDef.GPIO_Pin = GPIO_Pin_2;
+	GPIOE_InitDef.GPIO_OType = GPIO_OType_PP;
+	GPIOE_InitDef.GPIO_Mode = GPIO_Mode_OUT;
+	GPIOE_InitDef.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIOE_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_Init(GPIOE, &GPIOE_InitDef);
 }
 
 void setupLedAndButton()
@@ -78,7 +77,6 @@ void setupLedAndButton()
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
 	GPIO_InitTypeDef GPIO_InitStructure;
-	/* Configure PD12, PD13, PD14 and PD15 in output pushpull mode */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
@@ -143,8 +141,7 @@ void TIM3_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
 	{
-
-			TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 		if(action > 20)
 		{
 			PCD8544_Clear();
@@ -247,7 +244,6 @@ void delay_us(int x)
 }
 
 void HCSRinit(){
-	/* PD14 for trigger pin */
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	GPIO_InitTypeDef GPIOD_InitDef;
 	GPIOD_InitDef.GPIO_Pin = GPIO_Pin_14;
@@ -257,7 +253,6 @@ void HCSRinit(){
 	GPIOD_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_Init(GPIOD, &GPIOD_InitDef);
 
-	/* PD10 for echo pin */
 	GPIO_InitTypeDef GPIO_InitDef;
 	GPIO_InitDef.GPIO_Pin = GPIO_Pin_10;
 	GPIO_InitDef.GPIO_Mode = GPIO_Mode_IN;
@@ -268,9 +263,6 @@ void HCSRinit(){
 }
 
 float CheckDistance(){
-	/* PD14 Trigger
-	 * PD PD10 Echo
-	 */
 	uint32_t time = 0;
 	GPIO_ResetBits(GPIOD, GPIO_Pin_14);
 	delay_us(5);
